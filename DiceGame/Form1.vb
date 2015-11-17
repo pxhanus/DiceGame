@@ -9,10 +9,39 @@ Public Class Form1
         Const MAX As Integer = 6
         Dim roll1 As Integer = RndInt(1, 6)
         Dim roll2 As Integer = RndInt(1, 6)
+        Dim risk As Integer = Val(Me.txtRisk.Text)
+        Static totalPoints As Integer = 1000
 
         RndInt(MIN, MAX)
+        FirstDie(roll1)
+        SecondDie(roll2)
 
-        Select Case roll1
+        If (roll1 + roll2) Mod 2 = 0 Then
+            totalPoints -= risk
+        Else
+            totalPoints += (risk * 2)
+        End If
+
+        Me.lblOutcome.Text = "Total points = " & totalPoints
+
+    End Sub
+    '********************************************************************************************
+    'RndInt - return a random integer between max and min
+    '
+    'post: a number is returned
+    '********************************************************************************************
+    Function RndInt(ByVal min As Integer, ByVal max As Integer) As Integer
+        Randomize()
+        Return Int((max - min + 1) * Rnd() + min)
+    End Function
+    '********************************************************************************************
+    'FirstDie 
+    'Uses Select Case statement to figure out the appropriate picture to return
+    'pre: a random number was choosen
+    'post: number is used to assign appropriate picutre to Dice1
+    '********************************************************************************************
+    Sub FirstDie(ByVal roll As Integer)
+        Select Case roll
             Case Is = 1
                 Me.picDice1.Image = My.Resources.ResourceManager.GetObject("die1")
             Case Is = 2
@@ -26,8 +55,15 @@ Public Class Form1
             Case Is = 6
                 Me.picDice1.Image = My.Resources.ResourceManager.GetObject("die6")
         End Select
-
-        Select Case roll2
+    End Sub
+    '********************************************************************************************
+    'SecondDie 
+    'Uses Select Case statement to figure out the appropriate picture to return
+    'pre: a random number was choosen
+    'post: number is used to assign appropriate picutre to Dice2
+    '********************************************************************************************
+    Sub SecondDie(ByVal roll As Integer)
+        Select Case roll
             Case Is = 1
                 Me.picDice2.Image = My.Resources.ResourceManager.GetObject("die1")
             Case Is = 2
@@ -42,13 +78,4 @@ Public Class Form1
                 Me.picDice2.Image = My.Resources.ResourceManager.GetObject("die6")
         End Select
     End Sub
-    '********************************************************************************************
-    'RndInt - return a random integer between max and min
-    '
-    'post: a number is returned
-    '********************************************************************************************
-    Function RndInt(ByVal min As Integer, ByVal max As Integer) As Integer
-        Randomize()
-        Return Int((max - min + 1) * Rnd() + min)
-    End Function
 End Class
